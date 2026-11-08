@@ -17,6 +17,7 @@ test('BGFT app is self-contained and explicitly user initiated', () => {
   assert.match(html, /id="connectPs4Button"/);
   assert.match(html, /id="choosePkgButton"/);
   assert.match(html, /manifest\.webmanifest/);
+  assert.match(html, /\.\/sw\.js\?v=2/);
   assert.match(sender, /const bgftMode = true/);
   assert.doesNotMatch(sender, /connect\(savedIp\)/);
   assert.match(sender, /\/pairing\/challenge/);
