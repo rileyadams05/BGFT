@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bgft-shell-v1';
+const CACHE_NAME = 'bgft-shell-v2';
 const APP_SCOPE = new URL(self.registration.scope);
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon.svg', './assets/js/ps4-catalogue-api.js', './assets/js/ps4-package-sender.js'];
 self.addEventListener('install', event => {
