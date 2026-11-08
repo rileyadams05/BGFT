@@ -13,6 +13,7 @@ const worker = fs.readFileSync(path.join(root, 'web/sw.js'), 'utf8');
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'web/manifest.webmanifest'), 'utf8'));
 
 test('BGFT app is self-contained and explicitly user initiated', () => {
+  assert.doesNotMatch(html, /class="topbar"|href="\/ps4\/(?:install|catalogues)\/"/);
   assert.match(html, /id="connectPs4Button"/);
   assert.match(html, /id="choosePkgButton"/);
   assert.match(html, /manifest\.webmanifest/);
