@@ -18,7 +18,10 @@
     body { margin:0; min-height:100vh; background:radial-gradient(ellipse at 50% 18%,#0a1c37 0,var(--bg) 68%); color:var(--text); font:14px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif; }
     a { color:inherit; }
     [hidden] { display:none!important; }
-    main { width:min(760px,calc(100% - 32px)); margin:58px auto 80px; }
+    .app-header { width:min(760px,calc(100% - 32px)); margin:22px auto 0; }
+    .back-button { display:inline-flex; align-items:center; gap:8px; min-height:40px; padding:0 13px; border:1px solid #31577f; border-radius:10px; background:#0a203c; color:#e5f1ff; text-decoration:none; font-weight:750; }
+    .back-button:hover { background:#102c4e; border-color:#4e83b5; }
+    main { width:min(760px,calc(100% - 32px)); margin:22px auto 80px; }
     h1 { margin:0; font-size:clamp(34px,5vw,48px); line-height:1.08; letter-spacing:-.055em; }
     .eyebrow { margin:0 0 8px; color:#65bcff; font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
     .lead { margin:12px 0 26px; color:#a4bad5; }
@@ -53,9 +56,9 @@
     .send-box { margin-top:18px; padding-top:18px; border-top:1px solid #ffffff18; }
     .package-input-row .field { margin:0; }
     .input-wrap { position:relative; }
-    .input-wrap > input { padding-right:130px; }
+    .input-wrap > input { padding-right:12px; }
     .mobile-upload { display:none; position:absolute; top:50%; right:7px; transform:translateY(-50%); width:36px; height:36px; place-items:center; padding:0; border:1px solid #31577f; border-radius:9px; background:#0a203c; color:#fff; font-family:inherit; font-size:23px; font-weight:700; line-height:1; cursor:pointer; }
-    .mobile-upload { display:grid; width:auto; min-width:100px; padding:0 10px; font-size:12px; white-space:nowrap; }
+    @media (hover:none) and (pointer:coarse) { .mobile-upload { display:grid; width:42px; min-width:42px; padding:0; font-size:23px; } .input-wrap > input { padding-right:58px; } }
     body.pkg-drag-active { outline:2px dashed #4389ce; outline-offset:-12px; }
     progress { width:100%; height:10px; accent-color:#438cf1; }
     .task { margin-top:14px; padding:12px; border:1px solid #1c3b60; border-radius:10px; background:#06152a; }
@@ -63,11 +66,15 @@
     .task small { margin-top:4px; color:#9db2cf; }
     .footer-note { margin:16px 0 0; color:#7187a4; font-size:11px; }
     :focus-visible { outline:3px solid #83c5ff; outline-offset:3px; }
+    @media(max-width:760px) { .app-header { margin-top:14px; } }
     @media(max-width:760px) { main { margin-top:34px; } .card-head { padding:19px 18px 0; } .card-body { padding:18px; } }
     @media(max-width:420px) { .ip-row { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
+  <header class="app-header">
+    <a class="back-button" href="/projects/" aria-label="Back to Projects page"><span aria-hidden="true">←</span>Back to Projects</a>
+  </header>
   <main>
     <section>
       <p class="eyebrow">PlayStation 4 · BGFT installation</p>
@@ -91,7 +98,7 @@
         </div>
         <form class="send-box" id="sendPackageForm" novalidate>
           <div class="package-input-row">
-            <div class="field"><label for="packageUrl">Your direct PKG URL or selected file</label><div class="input-wrap"><input id="packageUrl" type="text" autocomplete="url" inputmode="url" enterkeyhint="send" placeholder="Paste a PKG URL or drop a PKG anywhere on this page"><button class="mobile-upload button secondary" id="choosePkgButton" type="button" aria-label="Choose a PKG file">Choose PKG</button><input id="pkgFile" type="file" accept=".pkg,application/octet-stream" hidden></div></div>
+            <div class="field"><label for="packageUrl">Your direct PKG URL or selected file</label><div class="input-wrap"><input id="packageUrl" type="text" autocomplete="url" inputmode="url" enterkeyhint="send" placeholder="Paste a PKG URL or drop a PKG anywhere on this page"><button class="mobile-upload button secondary" id="choosePkgButton" type="button" aria-label="Choose a PKG file" title="Choose a PKG file">+</button><input id="pkgFile" type="file" accept=".pkg,application/octet-stream" hidden></div></div>
           </div>
           <progress id="uploadProgress" max="100" value="0" aria-label="Upload progress" hidden></progress>
           <p class="status" id="sendStatus" role="status" aria-live="polite" hidden></p>
@@ -106,7 +113,7 @@
   <script>
     // Check for site updates even when entering directly on a PS4 tool page.
     if ('serviceWorker' in navigator && location.protocol === 'https:') {
-      navigator.serviceWorker.register('./sw.js?v=2', { scope: './', updateViaCache: 'none' })
+      navigator.serviceWorker.register('./sw.js?v=3', { scope: './', updateViaCache: 'none' })
         .then(registration => registration.update()).catch(() => {});
     }
   </script>

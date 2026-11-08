@@ -14,10 +14,14 @@ const manifest = JSON.parse(fs.readFileSync(path.join(root, 'web/manifest.webman
 
 test('BGFT app is self-contained and explicitly user initiated', () => {
   assert.doesNotMatch(html, /class="topbar"|href="\/ps4\/(?:install|catalogues)\/"/);
+  assert.match(html, /href="\/projects\/"[^>]*aria-label="Back to Projects page"/);
   assert.match(html, /id="connectPs4Button"/);
   assert.match(html, /id="choosePkgButton"/);
+  assert.match(html, /\.mobile-upload \{ display:none/);
+  assert.match(html, /@media \(hover:none\) and \(pointer:coarse\)/);
+  assert.match(html, /title="Choose a PKG file">\+/);
   assert.match(html, /manifest\.webmanifest/);
-  assert.match(html, /\.\/sw\.js\?v=2/);
+  assert.match(html, /\.\/sw\.js\?v=3/);
   assert.match(sender, /const bgftMode = true/);
   assert.doesNotMatch(sender, /connect\(savedIp\)/);
   assert.match(sender, /\/pairing\/challenge/);
@@ -26,7 +30,7 @@ test('BGFT app is self-contained and explicitly user initiated', () => {
 });
 
 test('service worker only caches the app shell and ignores external requests', () => {
-  assert.match(worker, /bgft-shell-v2/);
+  assert.match(worker, /bgft-shell-v3/);
   assert.match(worker, /url\.origin !== self\.location\.origin/);
   assert.match(worker, /url\.pathname\.startsWith\(APP_SCOPE\.pathname\)/);
   assert.match(worker, /bgft-shell-/);
