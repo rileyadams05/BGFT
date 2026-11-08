@@ -1,0 +1,13 @@
+{
+  "name": "bgft-web",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Responsive browser client for a user-supplied PS4 BGFT package installation workflow",
+  "scripts": {
+    "test": "node --check web/assets/js/ps4-package-sender.js && node --check web/assets/js/ps4-catalogue-api.js && node --check web/sw.js && node --test tests/*.test.cjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}
