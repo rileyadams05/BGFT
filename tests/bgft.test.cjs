@@ -58,7 +58,7 @@ test('PWA starts within its own scope', () => {
   assert.match(installScript, /new URLSearchParams\(location\.search\).*install/);
   assert.match(installScript, /installer\.showDialog\(true\)/);
   assert.match(installScript, /installer\.install\(\)/);
-  assert.match(installScript, /customElements\.get\('pwa-install'\)/);
+  assert.match(installScript, /customElements\.whenDefined\('pwa-install'\)/);
   assert.match(installScript, /pwa-install-success-event/);
   assert.match(installScript, /pwa-install-fail-event/);
   assert.match(installScript, /Installation was not completed/);
