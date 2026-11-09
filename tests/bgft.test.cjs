@@ -26,7 +26,10 @@ test('BGFT app is self-contained and explicitly user initiated', () => {
   assert.match(html, /assets\/vendor\/pwa-install-0\.7\.0\.es\.js/);
   assert.match(html, /assets\/js\/pwa-install\.js/);
   assert.match(html, /id="pwaStatus"/);
-  assert.match(html, /\.\/sw\.js\?v=4/);
+  const shellVersion = worker.match(/bgft-shell-v(\\d+)/)?.[1];
+  assert.ok(shellVersion, 'service worker declares a versioned app-shell cache');
+  assert.ok(html.includes(`./sw.js?v=${shellVersion}`), 'HTML registers the current service-worker version');
+  assert.ok(fs.existsSync(path.join(root, 'web/assets/vendor/pwa-install-0.7.0.es.js')));
   assert.match(sender, /const bgftMode = true/);
   assert.doesNotMatch(sender, /connect\(savedIp\)/);
   assert.match(sender, /\/pairing\/challenge/);
@@ -35,7 +38,8 @@ test('BGFT app is self-contained and explicitly user initiated', () => {
 });
 
 test('service worker only caches the app shell and ignores external requests', () => {
-  assert.match(worker, /bgft-shell-v4/);
+  assert.match(worker, /const CACHE_NAME = 'bgft-shell-v\\d+'/);
+  assert.match(worker, /assets\\/vendor\\/pwa-install-0\\.7\\.0\\.es\\.js/);
   assert.match(worker, /url\.origin !== self\.location\.origin/);
   assert.match(worker, /url\.pathname\.startsWith\(APP_SCOPE\.pathname\)/);
   assert.match(worker, /bgft-shell-/);
@@ -52,8 +56,14 @@ test('PWA starts within its own scope', () => {
   assert.ok(fs.existsSync(path.join(root, 'web/icons/icon-192.png')));
   assert.ok(fs.existsSync(path.join(root, 'web/icons/icon-512.png')));
   assert.match(installScript, /new URLSearchParams\(location\.search\).*install/);
-  assert.match(installScript, /installer\.showDialog\(\)/);
+  assert.match(installScript, /installer\.showDialog\(true\)/);
+  assert.match(installScript, /installer\.install\(\)/);
   assert.match(installScript, /customElements\.get\('pwa-install'\)/);
+  assert.match(installScript, /pwa-install-success-event/);
+  assert.match(installScript, /pwa-install-fail-event/);
+  assert.match(installScript, /Installation was not completed/);
+  assert.match(html, /id=\"bgftOpenInstalledApp\"/);
+  assert.match(html, /id=\"bgftOpenInBrowser\"/);
 });
 
 test('PS4 requests use CORS without credentials and explicit API path', async () => {
