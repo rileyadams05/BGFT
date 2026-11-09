@@ -13,8 +13,10 @@ if (installer && choice && installPrompt) {
       choice.querySelector('p').textContent = 'Choose how you want to continue.';
       choice.querySelector('#bgftOpenInstalledApp').hidden = false;
       choice.querySelector('#bgftOpenInBrowser').hidden = false;
-    } else if (failed) {
-      document.getElementById('bgftInstallChoiceHeading').textContent = 'BGFT could not be installed';
+    } else {
+      document.getElementById('bgftInstallChoiceHeading').textContent = failed
+        ? 'BGFT could not be installed'
+        : 'Installation was not completed';
       choice.querySelector('p').textContent = 'You can still open BGFT in your browser.';
       choice.querySelector('#bgftOpenInstalledApp').hidden = true;
       choice.querySelector('#bgftOpenInBrowser').hidden = false;
@@ -33,7 +35,7 @@ if (installer && choice && installPrompt) {
   });
 
   installer.addEventListener('pwa-user-choice-result-event', event => {
-    if (event.detail?.userChoiceResult === 'dismissed') showChoice();
+    if (event.detail?.userChoiceResult === 'dismissed') showChoice({ failed: true });
   });
 
   continueInBrowser?.addEventListener('click', () => {
