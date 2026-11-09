@@ -39,7 +39,7 @@ test('BGFT app is self-contained and explicitly user initiated', () => {
 
 test('service worker only caches the app shell and ignores external requests', () => {
   assert.match(worker, /const CACHE_NAME = 'bgft-shell-v\d+'/);
-  assert.match(worker, /assets\/vendor\/pwa-install-0\.7\.0\.es\.js/);
+  assert.match(worker, /assets\/vendor\/pwa-install-0\.7\.0\.bundle\.js/);
   assert.match(worker, /url\.origin !== self\.location\.origin/);
   assert.match(worker, /url\.pathname\.startsWith\(APP_SCOPE\.pathname\)/);
   assert.match(worker, /bgft-shell-/);
