@@ -16,7 +16,7 @@ if (installer && choice) {
   if (installIntent) {
     history.replaceState(null, '', `${location.pathname}${location.hash}`);
     if (customElements.get('pwa-install')) {
-      customElements.whenDefined('pwa-install').then(() => installer.showDialog());
+      customElements.whenDefined('pwa-install').then(() => installer.showDialog(true));
     } else {
       const status = document.getElementById('pwaStatus');
       status.textContent = 'The install guide could not be loaded. BGFT is still available in this browser; use your browser’s supported app-install option to add it to your device.';
