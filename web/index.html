@@ -65,6 +65,11 @@
     .task strong,.task small { display:block; overflow-wrap:anywhere; }
     .task small { margin-top:4px; color:#9db2cf; }
     .footer-note { margin:16px 0 0; color:#7187a4; font-size:11px; }
+    .install-choice { width:min(460px,calc(100% - 32px)); border:1px solid #31577f; border-radius:16px; padding:22px; color:var(--text); background:#071a34; }
+    .install-choice::backdrop { background:#000b; backdrop-filter:blur(6px); }
+    .install-choice h2 { margin:0 0 8px; }
+    .install-choice p { color:var(--muted); }
+    .install-choice-actions { display:flex; gap:10px; flex-wrap:wrap; }
     :focus-visible { outline:3px solid #83c5ff; outline-offset:3px; }
     @media(max-width:760px) { .app-header { margin-top:14px; } }
     @media(max-width:760px) { main { margin-top:34px; } .card-head { padding:19px 18px 0; } .card-body { padding:18px; } }
@@ -80,6 +85,7 @@
       <p class="eyebrow">PlayStation 4 · BGFT installation</p>
       <h1 id="pageTitle">BGFT</h1>
       <p class="lead" id="pageLead">Send your own compatible PKG or fPKG to a paired BGFT service running on your PS4.</p>
+      <p class="status" id="pwaStatus" role="status" aria-live="polite" hidden></p>
     </section>
     <section class="card" aria-labelledby="sendHeading">
       <div class="card-head"><h2 id="sendHeading">PS4 BGFT connection</h2><p>Enter your console’s private network address, then connect when you are ready.</p></div>
@@ -108,12 +114,23 @@
       </div>
     </section>
   </main>
+  <pwa-install id="bgftPwaInstall" manifest-url="./manifest.webmanifest"></pwa-install>
+  <dialog class="install-choice" id="bgftInstallChoice" aria-labelledby="bgftInstallChoiceHeading">
+    <h2 id="bgftInstallChoiceHeading">BGFT is installed</h2>
+    <p>Choose how you want to continue.</p>
+    <div class="install-choice-actions">
+      <a class="button" href="/bgft/">Use Web App</a>
+      <a class="button secondary" href="/bgft/?open=browser" target="_blank" rel="noopener noreferrer">Continue in Browser</a>
+    </div>
+  </dialog>
+  <script type="module" src="./assets/vendor/pwa-install-0.7.0.es.js"></script>
+  <script type="module" src="./assets/js/pwa-install.js"></script>
   <script src="./assets/js/ps4-catalogue-api.js" defer></script>
   <script src="./assets/js/ps4-package-sender.js" defer></script>
   <script>
     // Check for site updates even when entering directly on a PS4 tool page.
     if ('serviceWorker' in navigator && location.protocol === 'https:') {
-      navigator.serviceWorker.register('./sw.js?v=3', { scope: './', updateViaCache: 'none' })
+      navigator.serviceWorker.register('./sw.js?v=4', { scope: './', updateViaCache: 'none' })
         .then(registration => registration.update()).catch(() => {});
     }
   </script>

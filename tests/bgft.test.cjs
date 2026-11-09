@@ -9,6 +9,7 @@ const { createClient } = require('../web/assets/js/ps4-catalogue-api.js');
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'web/index.html'), 'utf8');
 const sender = fs.readFileSync(path.join(root, 'web/assets/js/ps4-package-sender.js'), 'utf8');
+const installScript = fs.readFileSync(path.join(root, 'web/assets/js/pwa-install.js'), 'utf8');
 const worker = fs.readFileSync(path.join(root, 'web/sw.js'), 'utf8');
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'web/manifest.webmanifest'), 'utf8'));
 
@@ -21,7 +22,11 @@ test('BGFT app is self-contained and explicitly user initiated', () => {
   assert.match(html, /@media \(hover:none\) and \(pointer:coarse\)/);
   assert.match(html, /title="Choose a PKG file">\+/);
   assert.match(html, /manifest\.webmanifest/);
-  assert.match(html, /\.\/sw\.js\?v=3/);
+  assert.match(html, /pwa-install[^>]+manifest-url="\.\/manifest\.webmanifest"/);
+  assert.match(html, /assets\/vendor\/pwa-install-0\.7\.0\.es\.js/);
+  assert.match(html, /assets\/js\/pwa-install\.js/);
+  assert.match(html, /id="pwaStatus"/);
+  assert.match(html, /\.\/sw\.js\?v=4/);
   assert.match(sender, /const bgftMode = true/);
   assert.doesNotMatch(sender, /connect\(savedIp\)/);
   assert.match(sender, /\/pairing\/challenge/);
@@ -30,17 +35,25 @@ test('BGFT app is self-contained and explicitly user initiated', () => {
 });
 
 test('service worker only caches the app shell and ignores external requests', () => {
-  assert.match(worker, /bgft-shell-v3/);
+  assert.match(worker, /bgft-shell-v4/);
   assert.match(worker, /url\.origin !== self\.location\.origin/);
   assert.match(worker, /url\.pathname\.startsWith\(APP_SCOPE\.pathname\)/);
   assert.match(worker, /bgft-shell-/);
 });
 
 test('PWA starts within its own scope', () => {
-  assert.equal(manifest.scope, './');
-  assert.equal(manifest.start_url, './');
+  assert.equal(manifest.id, '/bgft/');
+  assert.equal(manifest.scope, '/bgft/');
+  assert.equal(manifest.start_url, '/bgft/');
   assert.equal(manifest.display, 'standalone');
   assert.ok(manifest.icons.some(icon => icon.type === 'image/svg+xml'));
+  assert.ok(manifest.icons.some(icon => icon.sizes === '192x192'));
+  assert.ok(manifest.icons.some(icon => icon.sizes === '512x512'));
+  assert.ok(fs.existsSync(path.join(root, 'web/icons/icon-192.png')));
+  assert.ok(fs.existsSync(path.join(root, 'web/icons/icon-512.png')));
+  assert.match(installScript, /new URLSearchParams\(location\.search\).*install/);
+  assert.match(installScript, /installer\.showDialog\(\)/);
+  assert.match(installScript, /customElements\.get\('pwa-install'\)/);
 });
 
 test('PS4 requests use CORS without credentials and explicit API path', async () => {

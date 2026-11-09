@@ -4,7 +4,7 @@
   "private": false,
   "description": "Responsive browser client for a user-supplied PS4 BGFT package installation workflow",
   "scripts": {
-    "test": "node --check web/assets/js/ps4-package-sender.js && node --check web/assets/js/ps4-catalogue-api.js && node --check web/sw.js && node --test tests/*.test.cjs"
+    "test": "node --check web/assets/js/ps4-package-sender.js && node --check web/assets/js/ps4-catalogue-api.js && node --check web/assets/js/pwa-install.js && node --check web/sw.js && node --test tests/*.test.cjs"
   },
   "engines": {
     "node": ">=22"

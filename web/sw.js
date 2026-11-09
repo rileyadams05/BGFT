@@ -1,6 +1,6 @@
-const CACHE_NAME = 'bgft-shell-v3';
+const CACHE_NAME = 'bgft-shell-v4';
 const APP_SCOPE = new URL(self.registration.scope);
-const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon.svg', './assets/js/ps4-catalogue-api.js', './assets/js/ps4-package-sender.js'];
+const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png', './assets/js/pwa-install.js', './assets/js/ps4-catalogue-api.js', './assets/js/ps4-package-sender.js'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
 });
