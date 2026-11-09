@@ -115,6 +115,14 @@
     </section>
   </main>
   <pwa-install id="bgftPwaInstall" manual-apple manual-chrome manifest-url="./manifest.webmanifest"></pwa-install>
+  <dialog class="install-choice" id="bgftInstallPrompt" aria-labelledby="bgftInstallPromptHeading">
+    <h2 id="bgftInstallPromptHeading">Install BGFT</h2>
+    <p id="bgftInstallPromptDescription">Your browser will use the installation method supported on this device.</p>
+    <div class="install-choice-actions">
+      <button class="button" id="bgftStartInstall" type="button">Continue to Install</button>
+      <button class="button secondary" id="bgftUseBrowser" type="button">Continue in Browser</button>
+    </div>
+  </dialog>
   <dialog class="install-choice" id="bgftInstallChoice" aria-labelledby="bgftInstallChoiceHeading">
     <h2 id="bgftInstallChoiceHeading">BGFT is installed</h2>
     <p>Choose how you want to continue.</p>
