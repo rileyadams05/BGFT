@@ -23,7 +23,7 @@ test('BGFT app is self-contained and explicitly user initiated', () => {
   assert.match(html, /title="Choose a PKG file">\+/);
   assert.match(html, /manifest\.webmanifest/);
   assert.match(html, /pwa-install[^>]+manifest-url="\.\/manifest\.webmanifest"/);
-  assert.match(html, /assets\/vendor\/pwa-install-0\.7\.0\.es\.js/);
+  assert.match(html, /assets\/vendor\/pwa-install-0\.7\.0\.bundle\.js/);
   assert.match(html, /assets\/js\/pwa-install\.js/);
   assert.match(html, /id="pwaStatus"/);
   const shellVersion = worker.match(/bgft-shell-v(\d+)/)?.[1];
