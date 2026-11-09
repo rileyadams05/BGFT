@@ -29,7 +29,7 @@ test('BGFT app is self-contained and explicitly user initiated', () => {
   const shellVersion = worker.match(/bgft-shell-v(\d+)/)?.[1];
   assert.ok(shellVersion, 'service worker declares a versioned app-shell cache');
   assert.ok(html.includes(`./sw.js?v=${shellVersion}`), 'HTML registers the current service-worker version');
-  assert.ok(fs.existsSync(path.join(root, 'web/assets/vendor/pwa-install-0.7.0.es.js')));
+  assert.ok(fs.existsSync(path.join(root, 'web/assets/vendor/pwa-install-0.7.0.bundle.js')));
   assert.match(sender, /const bgftMode = true/);
   assert.doesNotMatch(sender, /connect\(savedIp\)/);
   assert.match(sender, /\/pairing\/challenge/);
